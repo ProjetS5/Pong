@@ -27,7 +27,6 @@ public class Racket extends PongItem {
 	}
 	
 	public void update(String paquet){
-		System.out.println(paquet);
 		StringTokenizer st = new StringTokenizer(paquet, "/");
 		while(st.hasMoreTokens()){
 			String str = st.nextToken();

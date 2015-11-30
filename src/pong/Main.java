@@ -60,8 +60,10 @@ public class Main  {
         
 		Pong pong = new Pong();
 		Window window = new Window(pong);
-		if(!host)
-			pong.f1(in, out);
+		if(host)
+			pong.f1(in, out); 
+		else
+			pong.f2(in, out);
 		window.displayOnscreen(in, out);
 	}
 }

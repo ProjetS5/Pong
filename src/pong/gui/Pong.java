@@ -84,9 +84,7 @@ public class Pong extends JPanel implements KeyListener {
 		try {
 			animate();
 			out.println(racket0.toString() + "/" + ball.toString());
-			System.out.println(racket0.toString() + "/" + ball.toString());
 			String paquet = in.readLine();
-			System.out.println(paquet);
 			racket1.update(paquet);
 			racket1.invHor(SIZE_PONG_X);
 			if (ball.getPositionX() > SIZE_PONG_X/2){
@@ -100,15 +98,20 @@ public class Pong extends JPanel implements KeyListener {
 		}		
 	}
 	
-	public void f1(BufferedReader in, PrintWriter out){
-		try{
-			String paquet = in.readLine();
-			ball.update(paquet);
-			ball.invHor(SIZE_PONG_X);
-		}catch (IOException e){
-			e.printStackTrace();
-		}
+public void f1(BufferedReader in, PrintWriter out){
+		animate();
+		out.println(racket0.toString() + "/" + ball.toString());
+}
+
+public void f2(BufferedReader in, PrintWriter out){
+	try{
+		String paquet = in.readLine();
+		ball.update(paquet);
+		ball.invHor(SIZE_PONG_X);
+	}catch (IOException e){
+		e.printStackTrace();
 	}
+}
 
 	/**
      * Proceeds to the movement of the ball and updates the screen
