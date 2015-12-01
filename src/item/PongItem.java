@@ -69,11 +69,16 @@ public abstract class PongItem {
 	}
 	
 	public void setPositionX(int x){
-		position.x= x;
+		position.x = x;
 	}
 	
 	public void setPositionY(int y){
-		position.y= y;
+		position.y = y;
+	}
+	
+	public void setPosition(int x, int y){
+		position.x = x;
+		position.y = y;
 	}
 
 	public void translate(int speedX, int speedY){

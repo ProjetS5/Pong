@@ -70,8 +70,10 @@ public class Pong extends JPanel implements KeyListener {
 		
 		this.ball = new Ball();
 
-		this.racket0= new Racket(new Point(0, SIZE_PONG_Y/2 - 50));
-		this.racket1= new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y/2 - 50));
+		this.racket0= new Racket(new Point(0, SIZE_PONG_Y));
+		this.racket1= new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
+		
+		this.centrer();
 
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
@@ -235,5 +237,11 @@ public void f2(BufferedReader in, PrintWriter out){
 		graphicContext.drawImage(racket0.getImage(), racket0.getPositionX(), racket0.getPositionY(), racket0.getWidth(), racket0.getHeight(), null);
 		graphicContext.drawImage(racket1.getImage(), racket1.getPositionX(), racket1.getPositionY(), racket1.getWidth(), racket1.getHeight(), null);
 		this.repaint();
+	}
+	
+	public void centrer(){
+		racket0.setPositionY((SIZE_PONG_Y - racket0.getHeight())/2);
+		racket1.setPositionY((SIZE_PONG_Y - racket1.getHeight())/2);
+		ball.setPosition((SIZE_PONG_X - ball.getHeight())/2, (SIZE_PONG_Y - ball.getHeight())/2);
 	}
 }
