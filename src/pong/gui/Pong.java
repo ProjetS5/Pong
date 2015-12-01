@@ -70,8 +70,8 @@ public class Pong extends JPanel implements KeyListener {
 		
 		this.ball = new Ball();
 
-		this.racket0= new Racket(new Point(0, 0));
-		this.racket1= new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
+		this.racket0= new Racket(new Point(0, SIZE_PONG_Y/2 - 50));
+		this.racket1= new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y/2 - 50));
 
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
