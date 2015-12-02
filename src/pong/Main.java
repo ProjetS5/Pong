@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import pong.gui.Pong;
+import pong.gui.Setting;
 import pong.gui.Window;
 
 /**
@@ -44,6 +45,9 @@ public class Main  {
 			}
 		}
 		
+		Setting setting = new Setting();
+		setting.paint(setting.getGraphics());
+		
 		/* Mise en place du Reader et du Writer */
 		BufferedReader in = null;
 		PrintWriter out = null;
@@ -57,7 +61,7 @@ public class Main  {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-        
+		
 		Pong pong = new Pong();
 		Window window = new Window(pong);
 		if(host)

@@ -34,7 +34,6 @@ public class Window extends JFrame {
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		System.out.println("Display on screen");
 
 		while(true) {
 			pong.animatebis(in, out);

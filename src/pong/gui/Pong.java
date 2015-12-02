@@ -6,6 +6,7 @@ import item.Racket;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -26,10 +27,11 @@ public class Pong extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constant (c.f. final) common to all Pong instances (c.f. static)
-	 * defining the background color of the Pong
+	 * Constants (c.f. final) common to all Pong instances (c.f. static)
+	 * defining the background and the text color of the Pong
 	 */
 	private static final Color backgroundColor = new Color(0xFF, 0x40, 0);
+	private static final Color textColor = Color.black;
 
 	/**
 	 * Width of pong area
@@ -51,6 +53,11 @@ public class Pong extends JPanel implements KeyListener {
 	 * Speed of racket (in pixels per second)
 	 */
 	public static final int RACKET_SPEED = 4;
+	
+	/**
+	 * Maximum score before game ending
+	 */
+	public static final int MAX = 10;
 
 	/**
 	 * Pixel data buffer for the Pong rendering
@@ -60,18 +67,23 @@ public class Pong extends JPanel implements KeyListener {
 	 * Graphic component context derived from buffer Image
 	 */
 	private Graphics graphicContext = null;
+	private Graphics graphicText = null;
 
 	private PongItem ball;
 	
 	private PongItem racket0;
 	private PongItem racket1;
 	
+	private Score score;
+	
 	public Pong() {
 		
 		this.ball = new Ball();
 
-		this.racket0= new Racket(new Point(0, SIZE_PONG_Y));
-		this.racket1= new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
+		this.racket0 = new Racket(new Point(0, SIZE_PONG_Y));
+		this.racket1 = new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
+		
+		this.score = new Score (0, 0, MAX);
 		
 		this.centrer();
 
@@ -225,17 +237,25 @@ public void f2(BufferedReader in, PrintWriter out){
 			buffer = createImage(SIZE_PONG_X, SIZE_PONG_Y);
 			if (buffer == null)
 				throw new RuntimeException("Could not instanciate graphics");
-			else
+			else{
 				graphicContext = buffer.getGraphics();
+				graphicText = buffer.getGraphics();
+			}
 		}
 		/* Fill the area with blue */
 		graphicContext.setColor(backgroundColor);
 		graphicContext.fillRect(0, 0, SIZE_PONG_X, SIZE_PONG_Y);
+		
+		/* Set font, color, etc for the text */
+		graphicText.setColor(textColor);
+		Font f1 = new Font("sansSerif", Font.PLAIN, 20);
+		graphicText.setFont(f1);
 
 		/* Draw items */
 		graphicContext.drawImage(ball.getImage(), ball.getPositionX(), ball.getPositionY(), ball.getWidth(), ball.getHeight(), null);
 		graphicContext.drawImage(racket0.getImage(), racket0.getPositionX(), racket0.getPositionY(), racket0.getWidth(), racket0.getHeight(), null);
 		graphicContext.drawImage(racket1.getImage(), racket1.getPositionX(), racket1.getPositionY(), racket1.getWidth(), racket1.getHeight(), null);
+		graphicText.drawString(score.toString(), (SIZE_PONG_X - graphicText.getFontMetrics().stringWidth(score.toString()))/2 , 25);
 		this.repaint();
 	}
 	
