@@ -28,7 +28,7 @@ public class Ball extends PongItem {
 	}
 	
 	public String toString(){
-		return ("B1" + super.toString() + "H" + getSpeedX() + "V" + getSpeedY());
+		return ("B0" + super.toString() + "H" + getSpeedX() + "V" + getSpeedY());
 	}
 	
 	public void update(String paquet){

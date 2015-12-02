@@ -3,6 +3,7 @@ package pong.gui;
 import item.Ball;
 import item.PongItem;
 import item.Racket;
+import item.Score;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -76,6 +77,8 @@ public class Pong extends JPanel implements KeyListener {
 	
 	private Score score;
 	
+	private boolean status;
+	
 	public Pong() {
 		
 		this.ball = new Ball();
@@ -84,6 +87,7 @@ public class Pong extends JPanel implements KeyListener {
 		this.racket1 = new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
 		
 		this.score = new Score (0, 0, MAX);
+		this.status = true;
 		
 		this.centrer();
 
@@ -91,19 +95,53 @@ public class Pong extends JPanel implements KeyListener {
 		this.addKeyListener(this);
 	}
 	
+	public boolean getStatus(){
+		return status;
+	}
+	
+	public void setStatus(boolean s){
+		status = s;
+	}
+	
+	/**
+	 * Return True if someone win this game
+	 */
+	public boolean victory(){
+		int n = score.victory();
+		if(n == -1){
+			return false;
+		}
+		System.out.println("Player + "+ n + " win");
+		return true;
+	}
+	/**
+	 * Return true if the player lose the ball;
+	 */
+	public boolean lose(){
+		return (ball.getPositionX() <= 0);
+	}
+	
 	/**
 	 * à faire !!!!
 	 */
 	public void animatebis(BufferedReader in, PrintWriter out){
 		try {
+			String lose = "S0";
 			animate();
-			out.println(racket0.toString() + "/" + ball.toString());
+			if(lose()){
+				lose = "S1";
+				score.setScoreP1(score.getScoreP1() + 1);
+				this.status = false;
+			}
+			out.println(racket0.toString() + "/" + ball.toString() + "/" + lose);
 			String paquet = in.readLine();
 			racket1.update(paquet);
 			racket1.invHor(SIZE_PONG_X);
 			if (ball.getPositionX() > SIZE_PONG_X/2){
 				ball.update(paquet);
 				ball.invHor(SIZE_PONG_X);
+				if(score.update(paquet))
+					this.status = false;
 			}
 			/* And update output */
 			updateScreen();
@@ -112,20 +150,21 @@ public class Pong extends JPanel implements KeyListener {
 		}		
 	}
 	
-public void f1(BufferedReader in, PrintWriter out){
-		animate();
-		out.println(racket0.toString() + "/" + ball.toString());
-}
-
-public void f2(BufferedReader in, PrintWriter out){
-	try{
-		String paquet = in.readLine();
-		ball.update(paquet);
-		ball.invHor(SIZE_PONG_X);
-	}catch (IOException e){
-		e.printStackTrace();
+	public void initiate(BufferedReader in, PrintWriter out, boolean first){
+		try{
+			if(first){
+				animate();
+				out.println(racket0.toString() + "/" + ball.toString());
+			}
+			else{
+				String paquet = in.readLine();
+				ball.update(paquet);
+				ball.invHor(SIZE_PONG_X);
+			}
+		}catch (IOException e){
+			e.printStackTrace();
+		}
 	}
-}
 
 	/**
      * Proceeds to the movement of the ball and updates the screen
