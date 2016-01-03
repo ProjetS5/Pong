@@ -12,7 +12,6 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import pong.gui.Pong;
-import pong.gui.Setting;
 import pong.gui.Window;
 
 /**
@@ -84,15 +83,29 @@ public class Main  {
 					e.printStackTrace();
 				}
 				
-				Pong pong = new Pong();
+				Pong pong = new Pong(in, out);
 				Window window = new Window(pong);
+				window.displayOnscreen();
 				
 				while(!pong.victory()){
-					pong.initiate(in, out, turn);
+					pong.initiate(turn);
 					turn = !turn;
-					window.displayOnscreen(in, out);
+					window.play();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {};
+				}
+				try{
+					in.close();
+					out.close();
+					socketClient.close();
+					if(socketServeur.isBound())
+						socketServeur.close();
+				}catch(IOException e){
+					e.printStackTrace();
 				}
 			}
-		}		
+		}
+		sc.close();
 	}
 }

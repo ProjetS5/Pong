@@ -39,7 +39,10 @@ public class Score {
 	public void setMax(int max){
 		this.max = max;
 	}
-	
+	/**
+	 * 
+	 * @return number of payer which win or -1 if the game isn't finish
+	 */
 	public int victory(){
 		if(p0 >= max)
 			return 0;
@@ -47,7 +50,11 @@ public class Score {
 			return 1;
 		return -1;
 	}
-	
+	/**
+	 * 
+	 * @param paquet
+	 * @return true if paquet has been updated
+	 */
 	public boolean update(String paquet){
 		StringTokenizer st = new StringTokenizer(paquet, "/");
 		while(st.hasMoreTokens()){

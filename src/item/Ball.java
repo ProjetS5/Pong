@@ -12,7 +12,7 @@ public class Ball extends PongItem {
 	/**
 	 * Speed of ball (in pixels per second)
 	 */
-	public static final int BALL_SPEED = 2;
+	public static final int BALL_SPEED = 1;
 	
 	public Ball(){
 		Image ball;
@@ -30,7 +30,9 @@ public class Ball extends PongItem {
 	public String toString(){
 		return ("B0" + super.toString() + "H" + getSpeedX() + "V" + getSpeedY());
 	}
-	
+	/**
+	 * update the ball with the informations contains in the paquet
+	 */
 	public void update(String paquet){
 		StringTokenizer st = new StringTokenizer(paquet, "/");
 		while(st.hasMoreTokens()){

@@ -25,7 +25,9 @@ public class Racket extends PongItem {
 	public String toString(){
 		return ("R" + super.toString());
 	}
-	
+	/**
+	 * update the racket with the informations contains in the paquet
+	 */
 	public void update(String paquet){
 		StringTokenizer st = new StringTokenizer(paquet, "/");
 		while(st.hasMoreTokens()){

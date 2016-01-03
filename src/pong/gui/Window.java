@@ -1,8 +1,5 @@
 package pong.gui;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-
 import javax.swing.JFrame;
 
 /**
@@ -29,15 +26,16 @@ public class Window extends JFrame {
 	 * Displays the Window using the defined margins, and call the
 	 * {@link Pong#animate()} method of the {@link Pong} every 100ms
 	 */
-	public void displayOnscreen(BufferedReader in, PrintWriter out) {
+	public void displayOnscreen() {
 		add(pong);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-
+	}
+	
+	public void play(){
 		while(pong.getStatus()) {
-			pong.setStatus(true);
-			pong.animatebis(in, out);
+			pong.play();
 			try {
 				Thread.sleep(Pong.timestep);
 			} catch (InterruptedException e) {};

@@ -37,11 +37,11 @@ public class Pong extends JPanel implements KeyListener {
 	/**
 	 * Width of pong area
 	 */
-	private static final int SIZE_PONG_X = 800;
+	public static final int SIZE_PONG_X = 800;
 	/**
 	 * Height of pong area
 	 */
-	private static final int SIZE_PONG_Y = 600;
+	public static final int SIZE_PONG_Y = 600;
 	/**
 	 * Time step of the simulation (in ms)
 	 */
@@ -75,11 +75,14 @@ public class Pong extends JPanel implements KeyListener {
 	private PongItem racket0;
 	private PongItem racket1;
 	
+	private BufferedReader in;
+	private PrintWriter out;
+	
 	private Score score;
 	
 	private boolean status;
 	
-	public Pong() {
+	public Pong(BufferedReader in, PrintWriter out) {
 		
 		this.ball = new Ball();
 
@@ -87,9 +90,9 @@ public class Pong extends JPanel implements KeyListener {
 		this.racket1 = new Racket(new Point(SIZE_PONG_X, SIZE_PONG_Y));
 		
 		this.score = new Score (0, 0, MAX);
-		this.status = true;
 		
-		this.centrer();
+		this.in = in;
+		this.out = out;
 
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
@@ -111,59 +114,72 @@ public class Pong extends JPanel implements KeyListener {
 		if(n == -1){
 			return false;
 		}
-		System.out.println("Player + "+ n + " win");
+		System.out.println("Player " + n + " win");
 		return true;
 	}
 	/**
-	 * Return true if the player lose the ball;
+	 * Return true if the player lose the ball
 	 */
 	public boolean lose(){
 		return (ball.getPositionX() <= 0);
 	}
 	
 	/**
-	 * à faire !!!!
+	 * Main part of the game
 	 */
-	public void animatebis(BufferedReader in, PrintWriter out){
-		try {
-			String lose = "S0";
-			animate();
-			if(lose()){
-				lose = "S1";
-				score.setScoreP1(score.getScoreP1() + 1);
-				this.status = false;
+	public void play(){
+		String lose = "S0";
+		animate();
+		if(lose()){
+			lose = "S1";
+			score.setScoreP1(score.getScoreP1() + 1);
+			this.status = false;
 			}
-			out.println(racket0.toString() + "/" + ball.toString() + "/" + lose);
-			String paquet = in.readLine();
-			racket1.update(paquet);
-			racket1.invHor(SIZE_PONG_X);
-			if (ball.getPositionX() > SIZE_PONG_X/2){
-				ball.update(paquet);
-				ball.invHor(SIZE_PONG_X);
-				if(score.update(paquet))
-					this.status = false;
-			}
-			/* And update output */
-			updateScreen();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		out.println(racket0.toString() + "/" + ball.toString() + "/" + lose);
+		update();
+		/* And update output */
+		updateScreen();		
 	}
 	
-	public void initiate(BufferedReader in, PrintWriter out, boolean first){
+	/**
+	 * Update the game with received informations
+	 */
+	public void update(){
+		try{
+			String paquet = in.readLine();
+			System.out.println(paquet);
+			racket1.update(paquet);
+			racket1.invHor();
+			if(ball.getPositionX() > SIZE_PONG_X/2){
+				ball.update(paquet);		
+				ball.invHor();
+				if(score.update(paquet))
+					this.status = false;
+				}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void initiate(boolean first){
+		this.centrer();
+		this.status = true;
 		try{
 			if(first){
+				System.out.println("Initiation Hote");
 				animate();
 				out.println(racket0.toString() + "/" + ball.toString());
 			}
 			else{
+				System.out.println("Initiation Client");
 				String paquet = in.readLine();
 				ball.update(paquet);
-				ball.invHor(SIZE_PONG_X);
+				ball.invHor();
 			}
 		}catch (IOException e){
 			e.printStackTrace();
 		}
+		updateScreen();
 	}
 
 	/**

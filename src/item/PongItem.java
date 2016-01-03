@@ -5,6 +5,8 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
+import pong.gui.Pong;
+
 public abstract class PongItem {
 	
 	/**
@@ -27,6 +29,12 @@ public abstract class PongItem {
 	 * Item to be displayed
 	 */
 	protected ImageIcon icon;
+	
+	/**
+	 * 
+	 * maximum tolerance between positions
+	 */
+	protected int tolerance;
 	
 	public int getWidth(){
 		return width;
@@ -123,9 +131,11 @@ public abstract class PongItem {
 	}
 
 	public abstract void update(String paquet);
-	
-	public void invHor(int sizeX){
-		setPositionX(sizeX - getPositionX() - getWidth());
+	/**
+	 * Mirror the game around X axe
+	 */
+	public void invHor(){
+		setPositionX(Pong.SIZE_PONG_X - getPositionX() - getWidth());
 		if(this instanceof Ball){
 			setSpeedX(-getSpeedX());
 		}
